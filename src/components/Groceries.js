@@ -11,7 +11,7 @@ import Firebase from 'firebase'
 import config from '../../config'
 import Item from './Item'
 
-const itemsRef = new Firebase(`${ config.FIREBASE_ROOT }/items`)
+const itemsRef = new Firebase(`${ config.FIREBASE_ROOT }/eventos`)
 const connectedRef = new Firebase(`${ config.FIREBASE_ROOT }/.info/connected`)
 
 export default class Groceries extends Component {
@@ -66,29 +66,23 @@ export default class Groceries extends Component {
   renderRow(rowData) {
     console.log(this.props.connected)
     return (
-      <Item name={rowData.title}
-            removable={this.props.connected}
-            onRemove={() => this._remove(rowData.id)} />
+      <Item
+        name               = {rowData.nombre}
+        descripcion        = {rowData.descripcion}
+        imagen             = {rowData.imagen}
+        pie_de_foto        = {rowData.pie_de_foto}
+        organizador        = {rowData.organizador}
+        telefono_contacto  = {rowData.telefono_contacto}
+        link_inscripciones = {rowData.link_inscripciones}
+        fecha_inscripcion  = {rowData.fecha_inscripcion}
+        area_convergencia  = {rowData.area_convergencia}
+        tipo               = {rowData.tipo}
+        latitud            = {rowData.latitud}
+        longitud           = {rowData.longitud}
+        lugar              = {rowData.lugar}
+        fechas             = {rowData.fechas}
+      />
     )
-  }
-
-  _add() {
-    const id = Math.random().toString(36).substring(7)
-    const itemRef = itemsRef.child(id)
-
-    itemRef.set({
-      id,
-      title: this.state.newItem,
-      time: new Date().getTime()
-    })
-
-    this.setState({newItem: ''})
-
-    setTimeout(() => this.refs.newItem.focus(), 1)
-  }
-
-  _remove(id) {
-    itemsRef.child(id).remove()
   }
 
   render() {
@@ -108,16 +102,9 @@ export default class Groceries extends Component {
     return (
       <View style={styles.container}>
         {readonlyMessage}
-        <TextInput placeholder="Something delicious"
-                   style={styles.newItem}
-                   ref="newItem"
-                   editable={this.props.connected}
-                   value={this.state.newItem}
-                   onChangeText={(newItem) => this.setState({newItem})}
-                   onSubmitEditing={() => this._add()} />
-
-
         <ListView
+          style={styles.list}
+          horizontal={true}
           dataSource={this.dataSource.cloneWithRows(items)}
           enableEmptySections={true}
           renderRow={this.renderRow.bind(this)}
@@ -131,19 +118,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 40,
-    backgroundColor: '#F6F6F6'
+    backgroundColor: '#666666'
   },
-  newItem: {
-    backgroundColor: '#FFFFFF',
-    height: 42,
-    borderColor: '#CCCCCC',
-    borderWidth: 1,
-    marginBottom: 10,
-    marginLeft: 20,
-    marginRight: 20,
-    paddingLeft: 10,
-    borderRadius: 5,
-    fontSize: 20
+  list:{
+    paddingLeft: 5,
+    paddingRight: 5,
   },
   offline: {
     backgroundColor: '#000000',

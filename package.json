@@ -6,11 +6,15 @@
     "start": "node_modules/react-native/packager/packager.sh"
   },
   "dependencies": {
+    "@remobile/react-native-cordova": "^1.0.9",
+    "@remobile/react-native-sqlite": "^1.0.1",
     "firebase": "2.4.2",
     "react": "^15.0.2",
     "react-native": "^0.26.2",
+    "react-native-fs": "^1.5.1",
     "react-native-simple-store": "^1.0.1",
     "react-redux": "^4.4.0",
+    "react-timer-mixin": "^0.13.3",
     "redux": "^3.3.1",
     "redux-thunk": "^2.0.1"
   }

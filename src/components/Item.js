@@ -1,102 +1,49 @@
 import React, { Component } from 'react'
+import Dimensions from 'Dimensions';
 import {
   Animated,
   PanResponder,
   StyleSheet,
+  Image,
   Text,
   View
 } from 'react-native'
 
+var {height, width} = Dimensions.get('window');
+
 export default class Item extends Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      scaleY: new Animated.Value(1),
-      pan: new Animated.ValueXY()
-    }
-  }
-
-  _reset() {
-    Animated.timing(this.state.pan, {
-      toValue: {x: 0, y: 0},
-      duration: 250
-    }).start()
-  }
-
-  _checkForRemoval() {
-    this.state.pan.flattenOffset()
-    let x = this.state.pan.x._value
-    if (Math.abs(x) > 50) {
-      this.refs.wrapper.measure((ox, oy, width) => {
-        let newX
-        if (x > 0) {
-          newX = width
-        } else {
-          newX = -2 * width
-        }
-
-        Animated.sequence([
-          Animated.timing(this.state.pan, {
-            toValue: {x: newX, y: 0},
-            duration: 250
-          }),
-          Animated.timing(this.state.pan, {
-            toValue: {x: 0, y: 0},
-            duration: 0
-          })
-        ]).start(() => {
-          this.props.onRemove()
-        })
-      })
-    } else {
-      this._reset()
-    }
+    this.state={image:props.imagen}
   }
 
   componentWillMount() {
-    this._panResponder = PanResponder.create({
-      onMoveShouldSetResponderCapture: () => true,
-      onMoveShouldSetPanResponderCapture: () => this.props.removable,
-
-      onPanResponderGrant: () => {
-        this.state.pan.setOffset({x: this.state.pan.x._value})
-        this.state.pan.setValue({x: 0})
-      },
-
-      onPanResponderMove: Animated.event([
-        null, {dx: this.state.pan.x, dy: this.state.pan.y}
-      ]),
-
-      onPanResponderRelease: () => this._checkForRemoval(),
-
-      onPanResponderTerminate: () => this._checkForRemoval()
-    })
   }
 
   render() {
-    const { pan, scaleY } = this.state
-    const translateX = pan.x
-
-    const animatedCardStyles = {transform: [{translateX}, {scaleY}]}
     const wrapperStyles = {
-      backgroundColor: '#00AA00',
-      transform: [{scaleY}]
+      padding:5
     }
-
+    var imagen = this.props.imagen;
+    var urlLink = 'http://168.176.236.6/circular/' + imagen;
+    const imgUrl = {uri: urlLink};
+    console.log(imgUrl);
     return (
-      <Animated.View style={wrapperStyles}>
+      <View style={wrapperStyles}>
         <View ref="wrapper">
-          <Animated.View style={animatedCardStyles} {...this._panResponder.panHandlers}>
-            <View style={styles.row}>
-              <Text style={styles.text}>
-                {this.props.name}
-              </Text>
-            </View>
-            <View style={styles.separator} />
-          </Animated.View>
+          <Image
+            resizeMode= 'cover'
+            style={styles.image}
+            source={imgUrl} >
+              <View style={styles.row}>
+                <Text style={styles.text}>
+                  {this.props.name}
+                </Text>
+              </View>
+          </Image>
+          <View style={styles.separator} />
         </View>
-      </Animated.View>
+      </View>
     )
   }
 }
@@ -104,12 +51,17 @@ export default class Item extends Component {
 const styles = StyleSheet.create({
   row: {
     justifyContent: 'center',
-    padding: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(0,0,0,0)',
     flex: 1
   },
+  image:{
+    padding: 5,
+    width: width-80,
+    height: height - 100,
+    flex:1
+  },
   separator: {
-    height: 1,
+    width: 1,
     backgroundColor: '#CCCCCC'
   },
   text: {

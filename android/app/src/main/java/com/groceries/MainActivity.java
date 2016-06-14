@@ -1,4 +1,5 @@
 package com.groceries;
+import com.rnfs.RNFSPackage;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
@@ -15,7 +16,7 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "Groceries";
+        return "Circular";
     }
 
     /**
@@ -34,7 +35,8 @@ public class MainActivity extends ReactActivity {
     @Override
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
-            new MainReactPackage()
+            new MainReactPackage(),
+            new RNFSPackage()
         );
     }
 }
