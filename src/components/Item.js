@@ -8,6 +8,7 @@ import {
   Text,
   View
 } from 'react-native'
+import CacheableImage from 'react-native-cacheable-image';
 
 var {height, width} = Dimensions.get('window');
 
@@ -31,7 +32,7 @@ export default class Item extends Component {
     return (
       <View style={wrapperStyles}>
         <View ref="wrapper">
-          <Image
+          <CacheableImage
             resizeMode= 'cover'
             style={styles.image}
             source={imgUrl} >
@@ -40,7 +41,7 @@ export default class Item extends Component {
                   {this.props.name}
                 </Text>
               </View>
-          </Image>
+          </CacheableImage>
           <View style={styles.separator} />
         </View>
       </View>
